@@ -1,0 +1,401 @@
+swagger: "2.0"
+info:
+  description: "This is a sample server Petstore server.  You can find out more about     Swagger at [http://swagger.io](http://swagger.io) or on [irc.freenode.net, #swagger](http://swagger.io/irc/).      For this sample, you can use the api key `special-key` to test the authorization     filters."
+  version: "1.0.0"
+  title: "TravelHelper"
+  termsOfService: "http://swagger.io/terms/"
+  contact:
+    email: "apiteam@swagger.io"
+  license:
+    name: "Apache 2.0"
+    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+host: "petstore.swagger.io"
+basePath: "/v2"
+tags:
+- name: "city"
+  description: "Operations about cities"
+
+- name: "user"
+  description: "Operations about user"
+  
+- name: "hotel"
+  description: "Operations about hotels"
+    
+- name: "event"
+  description: "Operations about events"
+    
+- name: "transport"
+  description: "Operations about transport"
+  
+- name: "route"
+  description: "Operations about routes"
+  
+- name: "booking"
+  description: "Operations about booking"
+  
+schemes:
+- "https"
+- "http"
+paths:
+  /city/getNames:
+    get:
+      tags:
+      - "city"
+      summary: "Get list of names of all available cities"
+      description: ""
+      operationId: "getCityList"
+      produces:
+      - "application/json"
+      parameters: []
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/City"
+
+  /city/{cityId}:
+    get:
+      tags:
+      - "city"
+      summary: "Get information about city by ID"
+      description: "Returns all data about city"
+      operationId: "getCityById"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "cityId"
+        in: "path"
+        description: "ID of city to return"
+        required: true
+        type: "integer"
+        format: "int64"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/City"
+        400:
+          description: "Invalid ID supplied"
+        404:
+          description: "City not found"
+  
+  /city/getPurposes:
+    get:
+      tags:
+      - "city"
+      summary: "Get list of purposes"
+      description: ""
+      operationId: "getPurposeList"
+      produces:
+      - "application/json"
+      parameters: []
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/Purpose"
+            
+  /event/{cityId}:
+    get:
+      tags:
+      - "event"
+      summary: "Get events of city by ID"
+      description: "Returns list of events of city"
+      operationId: "getEventsByCityId"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "cityId"
+        in: "path"
+        description: "ID of city"
+        required: true
+        type: "integer"
+        format: "int64"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/Event"
+        400:
+          description: "Invalid ID supplied"
+        404:
+          description: "Events not found"
+  
+  /hotel/{cityId}:
+    get:
+      tags:
+      - "hotel"
+      summary: "Get hotels of city by ID"
+      description: "Returns list of hotels of city"
+      operationId: "getHotelsByCityId"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "cityId"
+        in: "path"
+        description: "ID of city"
+        required: true
+        type: "integer"
+        format: "int64"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/Hotel"
+        400:
+          description: "Invalid ID supplied"
+        404:
+          description: "Hotels not found"
+      
+  /transport/{cityId}:
+    get:
+      tags:
+      - "transport"
+      summary: "Get transport of city by ID"
+      description: "Returns list of transport of city"
+      operationId: "getTransportByCityId"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "cityId"
+        in: "path"
+        description: "ID of city"
+        required: true
+        type: "integer"
+        format: "int64"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/Transport"
+        400:
+          description: "Invalid ID supplied"
+        404:
+          description: "Transport not found"
+      
+  /route:
+    post:
+      tags:
+      - "route"
+      summary: "Creates a route of travel"
+      description: ""
+      operationId: "createRoute"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Route object"
+        required: true
+        schema:
+          $ref: "#/definitions/Route"
+      responses:
+        200:
+            description: "successful operation"
+            schema:
+              type: "array"
+              items:
+                type: object
+        405:
+          description: "Invalid input"
+  
+  /booking:
+    post:
+      tags:
+      - "booking"
+      summary: "Book all elements of created root"
+      description: ""
+      operationId: "bookRoute"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Route object"
+        required: true
+        schema:
+          $ref: "#/definitions/Route"
+      responses:
+        200:
+            description: "successful operation"
+            schema:
+              type: "array"
+              items:
+                type: object
+        405:
+          description: "Invalid input"
+          
+definitions:
+  User:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        format: "int64"
+      username:
+        type: "string"
+      firstName:
+        type: "string"
+      lastName:
+        type: "string"
+      email:
+        type: "string"
+      password:
+        type: "string"
+      phone:
+        type: "string"
+      userStatus:
+        type: "integer"
+        format: "int32"
+        description: "User Status"
+    xml:
+      name: "User"
+  City:
+    type: "object"
+    required:
+    - "id"
+    - "name"
+    - "country"
+    properties:
+      id:
+        type: "integer"
+        format: "int64"
+      name:
+        type: "string"
+        example: "Moscow"
+      country:
+        type: "string"
+        example: "Russia"
+      description:
+        type: "string"
+        example: "Capital of great Russia"
+    xml:
+      name: "City"
+  Hotel:
+    type: "object"
+    required:
+    - "id"
+    - "city_id"
+    - "name"
+    - "stars"
+    properties:
+      id:
+        type: "integer"
+        format: "int64"
+      city_id:
+        type: "integer"
+        format: "int64"
+      name:
+        type: "string"
+        example: "Grand Royal"
+      stars:
+        type: "number"
+        example: 3.5
+    xml:
+      name: "Hotel"
+  Transport:
+    type: "object"
+    required:
+    - "id"
+    - "name"
+    - "type"
+    properties:
+      id:
+        type: "integer"
+        format: "int64"
+      name:
+        type: "string"
+        example: "Taxi Lux"
+      type:
+        type: "string"
+        example: "Taxi"
+    xml:
+      name: "Transport"
+  Event:
+    type: "object"
+    required:
+    - "id"
+    - "city_id"
+    - "name"
+    - "type"
+    properties:
+      id:
+        type: "integer"
+        format: "int64"
+      city_id:
+        type: "integer"
+        format: "int64"
+      name:
+        type: "string"
+        example: "???"
+      type:
+        type: "string"
+        example: "???"
+    xml:
+      name: "Event"
+  Purpose:
+    type: "object"
+    required:
+    - "id"
+    - "name"
+    properties:
+      id:
+        type: "integer"
+        format: "int64"
+      name:
+        type: "string"
+        example: "Тусить"
+    xml:
+      name: "Purpose"
+  Route:
+    type: "object"
+    required:
+    - "id"
+    properties:
+      id:
+        type: "integer"
+        format: "int64"
+      purposeId:
+        type: integer
+      citiesIds:
+        type: array
+        items:
+            type: integer
+        example: [20, 30, 40]
+      eventsIds:
+        type: array
+        items:
+            type: integer
+        example: [220, 330, 440]
+      transportIds:
+        type: array
+        items:
+            type: integer
+        example: [422, 233, 344]
+      hotelsIds:
+        type: array
+        items:
+            type: integer
+        example: [99, 88, 77]
+          
+    xml:
+      name: "Route"
+  ApiResponse:
+    type: "object"
+    properties:
+      code:
+        type: "integer"
+        format: "int32"
+      type:
+        type: "string"
+      message:
+        type: "string"
+externalDocs:
+  description: "Find out more about Swagger"
+  url: "http://swagger.io"
